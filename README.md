@@ -1,0 +1,1 @@
+This plugin limits the number of falling blocks per chunk. This way, lags disappear when anvils fall or sand falls into the web. I released this after leaving my project, where I did all the work myself, which I was tired of. Tested only 1.20.4, but maybe work in other versions.
