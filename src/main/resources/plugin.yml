@@ -2,7 +2,7 @@ name: PreventFallLite
 author: Tioplaya
 version: '${project.version}'
 main: ru.tioplaya.PreventFallLite
-api-version: '1.20'
+api-version: '1.14'
 commands:
   PreventFallLite:
     aliases: [pfl, pflite]

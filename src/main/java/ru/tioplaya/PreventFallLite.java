@@ -11,14 +11,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import org.bukkit.Bukkit;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.bukkit.ChatColor.*;
 import static org.bukkit.entity.EntityType.*;
@@ -27,7 +26,7 @@ public final class PreventFallLite extends JavaPlugin implements Listener {
     private void log(ChatColor color, String str) {
         Bukkit.getConsoleSender().sendMessage(color + str);
     }
-
+    ColorizeText text = new ColorizeText();
     boolean debug;
 
     @Override
@@ -42,63 +41,41 @@ public final class PreventFallLite extends JavaPlugin implements Listener {
         } else debug = false;
     }
 
+//                        .collect(Collectors.toList()); //на 1 блок больше в 1.20.4
+
     @EventHandler(priority = EventPriority.HIGH)
     public void fixFall(final EntityChangeBlockEvent event) {
-        List<Entity> allEntitiesInRadius = Arrays.stream(event.getEntity().getChunk().getEntities())
-                .filter(entity -> entity.getType() == FALLING_BLOCK)
-                .toList();
-        if (allEntitiesInRadius.size() > getConfig().getInt("Count")) {
-            if (event.getEntity() instanceof FallingBlock) {
-                event.setCancelled(true);
-                allEntitiesInRadius.forEach(entity -> {
-                    if (entity.hasGravity()) {
-                        event.setCancelled(true);
-                    }
-                    if (debug) {
-                        entity.setGlowing(true);
-                    }
-                });
+
+            List<Entity> allEntitiesInRadius = Arrays.stream(event.getEntity().getChunk().getEntities())
+                    .filter(entity -> entity.getType() == FALLING_BLOCK)
+//                    .toList();
+                    .collect(Collectors.toList()); //на 1 блок больше в 1.20.4
+            if (allEntitiesInRadius.size() > getConfig().getInt("Count")) {
+                if (event.getEntity() instanceof FallingBlock) {
+                    event.setCancelled(true);
+                    allEntitiesInRadius.forEach(entity -> {
+                        if (entity.hasGravity()) {
+                            event.setCancelled(true);
+                        }
+                        if (debug) {
+                            entity.setGlowing(true);
+                        }
+                    });
+                }
             }
-        }
     }
 
-//реализовать дроп от паутины
+    //реализовать дроп от паутины
     //реализовать падение блоков приведённых в неактивность
-
-    public String colorizeText(String text) {
-        String configValue = (String) this.getConfig().get(text);
-        if (configValue == null) {
-            return text;
-        }
-        text = configValue.replaceAll("&", "§");
-        Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-        Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) {
-            String hexCode = text.substring(matcher.start(), matcher.end());
-            String replaceSharp = hexCode.replace('#', 'x');
-            char[] ch = replaceSharp.toCharArray();
-            StringBuilder builder = new StringBuilder();
-            for (char c : ch)
-                builder.append("&").append(c);
-            text = text.replace(hexCode, builder.toString());
-            matcher = pattern.matcher(text);
-        }
-        return ChatColor.translateAlternateColorCodes('&', text);
-    }
-    private final String PREFIX = colorizeText("prefix");
-    private final String NOT_PERMISSION = colorizeText("not_permission");
-    private final String CONFIG_RELOADED = colorizeText("config_reloaded");
-    private final String HELP = colorizeText("help");
-    private final String UNKNOWN_COMMAND = colorizeText("unknown_command");
-    private final String too_many_args = colorizeText("too_many_args");
+    private final String PREFIX = text.colorizeText("prefix");
     @Override
-    public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
         if (!sender.hasPermission("pflite.admin")) {
-            sender.sendMessage(PREFIX + " " + NOT_PERMISSION);
+            sender.sendMessage(PREFIX + " " + text.colorizeText("not_permission"));
             return true;
         }
         if (args.length < 1) {
-            sender.sendMessage(PREFIX + " " + HELP);
+            sender.sendMessage(PREFIX + " " + text.colorizeText("help"));
             return true;
         }
 
@@ -108,10 +85,10 @@ public final class PreventFallLite extends JavaPlugin implements Listener {
                     reloadConfig();
                     saveConfig();
                     onEnable();
-                    sender.sendMessage(PREFIX + " " + CONFIG_RELOADED);
+                    sender.sendMessage(PREFIX + " " + text.colorizeText("config_reloaded"));
                 }
-            } else sender.sendMessage(PREFIX + " " + UNKNOWN_COMMAND);
-        } else sender.sendMessage(PREFIX + " " + too_many_args);
+            } else sender.sendMessage(PREFIX + " " + text.colorizeText("unknown_command"));
+        } else sender.sendMessage(PREFIX + " " + text.colorizeText("too_many_args"));
         return false;
     }
     @Override
