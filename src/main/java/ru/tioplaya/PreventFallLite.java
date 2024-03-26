@@ -2,8 +2,6 @@ package ru.tioplaya;
 
 import org.bukkit.*;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.EventHandler;
@@ -12,11 +10,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
+import ru.tioplaya.commands.TabCommands;
+import ru.tioplaya.commands.reload;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.bukkit.ChatColor.*;
@@ -26,31 +25,41 @@ public final class PreventFallLite extends JavaPlugin implements Listener {
     private void log(ChatColor color, String str) {
         Bukkit.getConsoleSender().sendMessage(color + str);
     }
-    ColorizeText text = new ColorizeText();
-    boolean debug;
+    public boolean debug = false;
 
     @Override
     public void onEnable() {
+        //регистрация листенеров и команд
         Bukkit.getPluginManager().registerEvents(this, this);
-        saveDefaultConfig();
+        Objects.requireNonNull(getCommand("PreventFallLite")).setExecutor(new reload(this));
+        Objects.requireNonNull(getCommand("PreventFallLite")).setTabCompleter(new TabCommands());
+
+        //конфиг
+        reload reloadCommand = new reload(this);
+        reloadCommand.onCommand(getServer().getConsoleSender(), Objects.requireNonNull(getCommand("PreventFallLite")), "reload", new String[]{"reload"});
         log(GREEN, "PreventFallLite enabled!");
         log(DARK_GREEN, "PreventFallLite by Tioplaya");
-        if (getConfig().getBoolean("Debug")) {
-            debug = true;
-            getLogger().log(Level.WARNING, "Debug enabled. Disable in config if you can't wanna see it");
-        } else debug = false;
     }
-
-//                        .collect(Collectors.toList()); //на 1 блок больше в 1.20.4
-
     @EventHandler(priority = EventPriority.HIGH)
     public void fixFall(final EntityChangeBlockEvent event) {
-
+        int count = getConfig().getInt("Count");
             List<Entity> allEntitiesInRadius = Arrays.stream(event.getEntity().getChunk().getEntities())
                     .filter(entity -> entity.getType() == FALLING_BLOCK)
-//                    .toList();
-                    .collect(Collectors.toList()); //на 1 блок больше в 1.20.4
-            if (allEntitiesInRadius.size() > getConfig().getInt("Count")) {
+                    .collect(Collectors.toList());
+
+            //фильтрация по версии для корректной работы
+            String serverVersion = Bukkit.getBukkitVersion();
+            String[] versionParts = serverVersion.split("\\.");
+            if (versionParts.length >= 2) {
+                int majorVersion = Integer.parseInt(versionParts[0]);
+                int minorVersion = Integer.parseInt(versionParts[1]);
+
+                if (majorVersion > 1 || (majorVersion == 1 && minorVersion > 16)) {
+                    count--;
+                }
+            }
+
+            if (allEntitiesInRadius.size() > count) {
                 if (event.getEntity() instanceof FallingBlock) {
                     event.setCancelled(true);
                     allEntitiesInRadius.forEach(entity -> {
@@ -63,34 +72,9 @@ public final class PreventFallLite extends JavaPlugin implements Listener {
                     });
                 }
             }
-    }
-
+        }
     //реализовать дроп от паутины
-    //реализовать падение блоков приведённых в неактивность
-    private final String PREFIX = text.colorizeText("prefix");
-    @Override
-    public boolean onCommand(CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
-        if (!sender.hasPermission("pflite.admin")) {
-            sender.sendMessage(PREFIX + " " + text.colorizeText("not_permission"));
-            return true;
-        }
-        if (args.length < 1) {
-            sender.sendMessage(PREFIX + " " + text.colorizeText("help"));
-            return true;
-        }
-
-        if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("reload")) {
-                if (sender.hasPermission("pflite.admin")) {
-                    reloadConfig();
-                    saveConfig();
-                    onEnable();
-                    sender.sendMessage(PREFIX + " " + text.colorizeText("config_reloaded"));
-                }
-            } else sender.sendMessage(PREFIX + " " + text.colorizeText("unknown_command"));
-        } else sender.sendMessage(PREFIX + " " + text.colorizeText("too_many_args"));
-        return false;
-    }
+    //реализовать падение блоков приведённых в не активность
     @Override
     public void onDisable() {
         log(RED,  "plugin shutting down");

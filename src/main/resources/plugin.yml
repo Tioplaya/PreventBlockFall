@@ -5,4 +5,6 @@ main: ru.tioplaya.PreventFallLite
 api-version: '1.14'
 commands:
   PreventFallLite:
-    aliases: [pfl, pflite]
+    aliases: [ pfl, pflite ]
+    usage: "Usage: /pfl [reload]"
+    description: main command

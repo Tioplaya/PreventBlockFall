@@ -31,7 +31,7 @@ public class ColorizeText {
         if (!yep) {
             text = text.replaceAll("&", "§");
         }
-        return ChatColor.translateAlternateColorCodes('&', text); //с помощью NamedTextColor переделать всё это
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
     //градиент не робит (переливающийся)
 }
