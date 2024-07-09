@@ -1,5 +1,6 @@
 package ru.tioplaya.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -44,6 +45,7 @@ public class reload implements CommandExecutor {
         try {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("pfl.admin")) {
+                    Bukkit.getScheduler().cancelTasks(plugin);
                     File CreateconfigName = new File(plugin.getDataFolder(), "config.yml");
                     File CreateFolderEvent = plugin.getDataFolder();
 

@@ -3,7 +3,6 @@ package ru.tioplaya;
 import org.bukkit.*;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -42,14 +41,15 @@ public final class PreventFallLite extends JavaPlugin implements Listener {
     }
     @EventHandler(priority = EventPriority.HIGH)
     public void fixFall(final EntityChangeBlockEvent event) {
-        int count = getConfig().getInt("Count");
-            List<Entity> allEntitiesInRadius = Arrays.stream(event.getEntity().getChunk().getEntities())
-                    .filter(entity -> entity.getType() == FALLING_BLOCK)
-                    .collect(Collectors.toList());
+        List<Entity> allEntitiesInRadius = Arrays.stream(event.getEntity().getChunk().getEntities())
+                .filter(entity -> entity.getType() == FALLING_BLOCK)
+                .collect(Collectors.toList());
+        //фильтрация по версии для корректной работы
+        String serverVersion = Bukkit.getBukkitVersion();
+        String[] versionParts = serverVersion.split("\\.");
 
-            //фильтрация по версии для корректной работы
-            String serverVersion = Bukkit.getBukkitVersion();
-            String[] versionParts = serverVersion.split("\\.");
+        int count = getConfig().getInt("Count");
+        try {
             if (versionParts.length >= 2) {
                 int majorVersion = Integer.parseInt(versionParts[0]);
                 int minorVersion = Integer.parseInt(versionParts[1]);
@@ -58,22 +58,20 @@ public final class PreventFallLite extends JavaPlugin implements Listener {
                     count--;
                 }
             }
-
-            if (allEntitiesInRadius.size() > count) {
-                if (event.getEntity() instanceof FallingBlock) {
-                    event.setCancelled(true);
-                    allEntitiesInRadius.forEach(entity -> {
-                        if (entity.hasGravity()) {
-                            event.setCancelled(true);
-                        }
-                        if (debug) {
-                            entity.setGlowing(true);
-                        }
-                    });
-                }
-            }
+        }catch (NumberFormatException e) {
+            count--;
         }
-    //реализовать дроп от паутины
+        if (allEntitiesInRadius.size() > count) {
+            allEntitiesInRadius.forEach(entity -> {
+                if (entity.hasGravity()) {
+                    event.setCancelled(true);
+                }
+                if (debug) {
+                    entity.setGlowing(true);
+                }
+            });
+        }
+    }
     //реализовать падение блоков приведённых в не активность
     @Override
     public void onDisable() {
