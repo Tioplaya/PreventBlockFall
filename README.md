@@ -1,4 +1,4 @@
-# Prevent Fall Lite
+# Prevent Block Fall
 This plugin limits the number of falling blocks per chunk. This way, lags disappear when anvils fall or sand falls into the web.
 
 ![111](https://github.com/Tioplaya/PreventFallLite/assets/137718036/362d4f79-64db-4d38-acf6-c58c27be4919)
