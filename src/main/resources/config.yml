@@ -1,8 +1,7 @@
-Count: 25 #Максимальное кол-во падающих сущностей на чанк.
-Debug: false #Режим отладки.
+Count: 25 #Maximum number of falling entities per chunk.
+Debug: false
 
-#Перенести строку - "\n"
-prefix: "&8[&f&lPFL&8] ->"
-config_reloaded: "&aКонфиг успешно перезагружен!"
-not_permission: "&cНет прав!"
-too_many_args: "&cСлишком много аргументов!"
+prefix: "&8[&f&lPBF&8] ->"
+config_reloaded: "&aConfig successfully reloaded!"
+not_permission: "&cNo permission!"
+too_many_args: "&cToo many arguments!"

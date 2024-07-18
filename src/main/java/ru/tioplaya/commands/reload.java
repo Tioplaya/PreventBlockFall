@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import ru.tioplaya.ColorizeText;
-import ru.tioplaya.PreventFallLite;
+import ru.tioplaya.PreventBlockFall;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -20,8 +20,8 @@ import java.util.logging.Level;
 
 public class reload implements CommandExecutor {
     ColorizeText text = new ColorizeText();
-    PreventFallLite plugin;
-    public reload(PreventFallLite plugin) {
+    PreventBlockFall plugin;
+    public reload(PreventBlockFall plugin) {
         this.plugin = plugin;
     }
 
@@ -38,13 +38,14 @@ public class reload implements CommandExecutor {
             return true;
         }
 
-        if (!sender.hasPermission("pfl.admin")) {
+        if (!sender.hasPermission("pbf.admin")) {
             sender.sendMessage(PREFIX + " " + text.colorizeText(config.getString("not_permission")));
+            return true;
         }
 
         try {
             if (args[0].equalsIgnoreCase("reload")) {
-                if (sender.hasPermission("pfl.admin")) {
+                if (sender.hasPermission("pbf.admin")) {
                     Bukkit.getScheduler().cancelTasks(plugin);
                     File CreateconfigName = new File(plugin.getDataFolder(), "config.yml");
                     File CreateFolderEvent = plugin.getDataFolder();

@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.tioplaya</groupId>
-    <artifactId>PreventFallLite</artifactId>
-    <version>1.2</version>
+    <artifactId>PreventBlockFall</artifactId>
+    <version>1.2.1</version>
     <packaging>jar</packaging>
 
-    <name>PreventFallLite</name>
+    <name>PreventBlockFall</name>
 
     <properties>
         <java.version>11</java.version>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PreventBlockFall:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PreventBlockFall_jar</output-path>
+    <root id="archive" name="PreventBlockFall.jar">
+      <element id="module-output" name="PreventBlockFall" />
+    </root>
+  </artifact>
+</component>

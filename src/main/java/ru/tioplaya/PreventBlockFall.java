@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import static org.bukkit.ChatColor.*;
 import static org.bukkit.entity.EntityType.*;
 
-public final class PreventFallLite extends JavaPlugin implements Listener {
+public final class PreventBlockFall extends JavaPlugin implements Listener {
     private void log(ChatColor color, String str) {
         Bukkit.getConsoleSender().sendMessage(color + str);
     }
@@ -30,14 +30,14 @@ public final class PreventFallLite extends JavaPlugin implements Listener {
     public void onEnable() {
         //регистрация листенеров и команд
         Bukkit.getPluginManager().registerEvents(this, this);
-        Objects.requireNonNull(getCommand("PreventFallLite")).setExecutor(new reload(this));
-        Objects.requireNonNull(getCommand("PreventFallLite")).setTabCompleter(new TabCommands());
+        Objects.requireNonNull(getCommand("PreventBlockFall")).setExecutor(new reload(this));
+        Objects.requireNonNull(getCommand("PreventBlockFall")).setTabCompleter(new TabCommands());
 
         //конфиг
         reload reloadCommand = new reload(this);
-        reloadCommand.onCommand(getServer().getConsoleSender(), Objects.requireNonNull(getCommand("PreventFallLite")), "reload", new String[]{"reload"});
-        log(GREEN, "PreventFallLite enabled!");
-        log(DARK_GREEN, "PreventFallLite by Tioplaya");
+        reloadCommand.onCommand(getServer().getConsoleSender(), Objects.requireNonNull(getCommand("PreventBlockFall")), "reload", new String[]{"reload"});
+        log(GREEN, "PreventBlockFall enabled!");
+        log(DARK_GREEN, "PreventBlockFall by Tioplaya");
     }
     @EventHandler(priority = EventPriority.HIGH)
     public void fixFall(final EntityChangeBlockEvent event) {

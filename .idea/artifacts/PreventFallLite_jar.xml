@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="PreventFallLite:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/PreventFallLite_jar</output-path>
-    <root id="archive" name="PreventFallLite.jar">
-      <element id="module-output" name="PreventFallLite" />
-    </root>
-  </artifact>
-</component>

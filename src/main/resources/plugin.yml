@@ -1,10 +1,10 @@
-name: PreventFallLite
+name: PreventBlockFall
 author: Tioplaya
 version: '${project.version}'
-main: ru.tioplaya.PreventFallLite
+main: ru.tioplaya.PreventBlockFall
 api-version: '1.14'
 commands:
-  PreventFallLite:
-    aliases: [ pfl, pflite ]
-    usage: "Usage: /pfl [reload]"
+  PreventBlockFall:
+    aliases: [ pbf, pbfall ]
+    usage: "Usage: /pbf [reload]"
     description: main command
