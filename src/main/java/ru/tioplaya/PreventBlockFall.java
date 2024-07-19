@@ -44,7 +44,14 @@ public final class PreventBlockFall extends JavaPlugin implements Listener {
         List<Entity> allEntitiesInRadius = Arrays.stream(event.getEntity().getChunk().getEntities())
                 .filter(entity -> entity.getType() == FALLING_BLOCK)
                 .collect(Collectors.toList());
-        //фильтрация по версии для корректной работы
+
+        //Дебаг на кол-во падающих блоков
+        if(debug) {
+            Server server = event.getEntity().getServer();
+            server.broadcastMessage(allEntitiesInRadius.size() + ".");
+            }
+
+        //фильтрация по версии для корректной работы (хз почему, но всё что ниже 1.16 неправильно считает)
         String serverVersion = Bukkit.getBukkitVersion();
         String[] versionParts = serverVersion.split("\\.");
 
