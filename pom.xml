@@ -6,7 +6,7 @@
 
     <groupId>ru.tioplaya</groupId>
     <artifactId>PreventBlockFall</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <packaging>jar</packaging>
 
     <name>PreventBlockFall</name>

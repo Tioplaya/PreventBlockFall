@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import ru.tioplaya.commands.TabCommands;
 import ru.tioplaya.commands.reload;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +27,7 @@ public final class PreventBlockFall extends JavaPlugin implements Listener {
     }
     public boolean debug = false;
 
+    public File ConfigCheck = new File(getDataFolder(), "config.yml");
     @Override
     public void onEnable() {
         //регистрация листенеров и команд
@@ -34,8 +36,10 @@ public final class PreventBlockFall extends JavaPlugin implements Listener {
         Objects.requireNonNull(getCommand("PreventBlockFall")).setTabCompleter(new TabCommands());
 
         //конфиг
-        reload reloadCommand = new reload(this);
-        reloadCommand.onCommand(getServer().getConsoleSender(), Objects.requireNonNull(getCommand("PreventBlockFall")), "reload", new String[]{"reload"});
+        if (!ConfigCheck.exists()) {
+            saveResource("config.yml", false);
+        }
+        reloadConfig();
         log(GREEN, "PreventBlockFall enabled!");
         log(DARK_GREEN, "PreventBlockFall by Tioplaya");
     }
@@ -49,7 +53,7 @@ public final class PreventBlockFall extends JavaPlugin implements Listener {
         if(debug) {
             Server server = event.getEntity().getServer();
             server.broadcastMessage(allEntitiesInRadius.size() + ".");
-            }
+        }
 
         //фильтрация по версии для корректной работы (хз почему, но всё что ниже 1.16 неправильно считает)
         String serverVersion = Bukkit.getBukkitVersion();
@@ -79,7 +83,7 @@ public final class PreventBlockFall extends JavaPlugin implements Listener {
             });
         }
     }
-    //реализовать падение блоков приведённых в не активность
+    // TODO реализовать падение блоков приведённых в не активность
     @Override
     public void onDisable() {
         log(RED,  "plugin shutting down");

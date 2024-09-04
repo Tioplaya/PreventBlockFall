@@ -33,5 +33,5 @@ public class ColorizeText {
         }
         return ChatColor.translateAlternateColorCodes('&', text);
     }
-    //градиент не робит (переливающийся)
+    // TODO градиент не робит (переливающийся)
 }
