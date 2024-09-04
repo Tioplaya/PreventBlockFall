@@ -4,4 +4,3 @@ Debug: false
 prefix: "&8[&f&lPBF&8] ->"
 config_reloaded: "&aConfig successfully reloaded!"
 not_permission: "&cNo permission!"
-too_many_args: "&cToo many arguments!"
