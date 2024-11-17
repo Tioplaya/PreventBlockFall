@@ -1,13 +1,11 @@
-package ru.tioplaya;
+package ru.tioplaya.util;
 
 import org.bukkit.ChatColor;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ColorizeText {
     boolean yep = false;
-
     public String colorizeText(String text) {
         if (text == null) {
             yep = false;
@@ -33,5 +31,5 @@ public class ColorizeText {
         }
         return ChatColor.translateAlternateColorCodes('&', text);
     }
-    // TODO градиент не робит (переливающийся)
+    // TODO переделать на новый формат
 }

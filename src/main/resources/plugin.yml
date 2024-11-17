@@ -2,9 +2,11 @@ name: PreventBlockFall
 author: Tioplaya
 version: '${project.version}'
 main: ru.tioplaya.PreventBlockFall
-api-version: '1.14'
+load: STARTUP
+website: https://github.com/Tioplaya/PreventBlockFall
+api-version: 1.13
 commands:
   PreventBlockFall:
     aliases: [ pbf, pbfall ]
-    usage: "Usage: /pbf [reload]"
+    usage: "Usage: /pbf [reload/debug] <all/enta/cba/mapsa/ent/maps>"
     description: main command

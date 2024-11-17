@@ -1,6 +1,22 @@
-Count: 25 #Maximum number of falling entities per chunk.
-Debug: false
+# Count - Maximum number of falling entities per chunk.
+# DelayForFall - Time (ticks) before next blocks fall (after previous blocks drop items)
+# AutoFall - If true, then automatically makes blocks fall that are not in the range (count*)
+# when previous blocks disappear. If false, then the \"CB_highlight\" function will not work
+# because it is useless in this case.
+# Glow - Falling blocks will be highlighted
+# CB_highlight - temporarily flying blocks will be replaced on glass for understand what is happening
+# Don't delete version! If u delete this - future updates edit config incorrectly
 
-prefix: "&8[&f&lPBF&8] ->"
-config_reloaded: "&aConfig successfully reloaded!"
-not_permission: "&cNo permission!"
+settings:
+ Count: 25
+ DelayForFall: 60
+ AutoFall: true
+ CB_highlight: false
+ Glow: false
+ CheckUpdates: true
+lang:
+ prefix: '&8[&f&lPBF&8] ->'
+ config_reloaded: '&aConfig successfully reloaded!'
+ no_permission: '&cNo permission!'
+debug: false
+version: "1.3"

@@ -17,6 +17,11 @@
       <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="bstats-repo" />
+      <option name="name" value="bstats-repo" />
+      <option name="url" value="https://repo.advancedplugins.com/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="papermc-repo" />
       <option name="name" value="papermc-repo" />
       <option name="url" value="https://repo.papermc.io/repository/maven-public/" />
